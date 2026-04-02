@@ -24,14 +24,15 @@
 
   <!-- ═══ NAVBAR ═══════════════════════════════════ -->
   <nav class="navbar" id="navbar">
-    <a href="#hero" class="nav-logo">MM<span class="accent">.</span></a>
+    <a href="#" class="nav-logo" data-page="hero">MM<span class="accent">.</span></a>
 
     <ul class="nav-links">
-      <li><a href="#about"   class="nav-item">About</a></li>
-      <li><a href="#domains" class="nav-item">Domains</a></li>
-      <li><a href="#skills"  class="nav-item">Skills</a></li>
-      <li><a href="#projects"class="nav-item">Projects</a></li>
-      <li><a href="#contact" class="nav-item">Contact</a></li>
+      <li><a href="#" class="nav-item" data-page="about">About</a></li>
+      <li><a href="#" class="nav-item" data-page="domains">Domains</a></li>
+      <li><a href="#" class="nav-item" data-page="skills">Skills</a></li>
+      <li><a href="#" class="nav-item" data-page="projects">Projects</a></li>
+      <li><a href="#" class="nav-item" data-page="blog">Blog</a></li>
+      <li><a href="#" class="nav-item" data-page="contact">Contact</a></li>
     </ul>
 
     <a href="assets/resume.pdf" target="_blank" class="btn-outline-sm">
@@ -45,11 +46,12 @@
 
   <!-- Mobile drawer -->
   <div class="mobile-drawer" id="mobile-drawer">
-    <a href="#about"    class="mob-link">About</a>
-    <a href="#domains"  class="mob-link">Domains</a>
-    <a href="#skills"   class="mob-link">Skills</a>
-    <a href="#projects" class="mob-link">Projects</a>
-    <a href="#contact"  class="mob-link">Contact</a>
+    <a href="#" class="mob-link" data-page="about">About</a>
+    <a href="#" class="mob-link" data-page="domains">Domains</a>
+    <a href="#" class="mob-link" data-page="skills">Skills</a>
+    <a href="#" class="mob-link" data-page="projects">Projects</a>
+    <a href="#" class="mob-link" data-page="blog">Blog</a>
+    <a href="#" class="mob-link" data-page="contact">Contact</a>
     <a href="assets/resume.pdf" target="_blank" class="btn-gold">Download Resume ↓</a>
   </div>
 
@@ -64,7 +66,7 @@
   </div>
 
   <!-- ═══ HERO ══════════════════════════════════════ -->
-  <section id="hero" class="hero">
+  <section id="hero" class="hero page active">
     <div class="hero-left">
 
       <div class="hero-badge">
@@ -87,8 +89,8 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#domains" class="btn-gold magnetic">Explore My Work</a>
-        <a href="#contact" class="btn-outline   magnetic">Get In Touch</a>
+        <a href="#" class="btn-gold magnetic" data-page="domains">Explore My Work</a>
+        <a href="#" class="btn-outline magnetic" data-page="contact">Get In Touch</a>
       </div>
 
       <div class="hero-stats">
@@ -98,7 +100,7 @@
         </div>
         <span class="stat-sep"></span>
         <div class="stat">
-          <span class="stat-n" data-count="3">0</span><span class="stat-plus">+</span>
+          <span class="stat-n" data-count="5+">0</span><span class="stat-plus">+</span>
           <span class="stat-l">Yrs Exp.</span>
         </div>
         <span class="stat-sep"></span>
@@ -187,19 +189,19 @@
   </section>
 
   <!-- ═══ ABOUT ═════════════════════════════════════ -->
-  <section id="about" class="section about">
+  <section id="about" class="section about page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// PROFILE</span>
         <h2>About <span class="text-gold">Me</span></h2>
       </div>
 
-      <div class="about-grid">
+      <div class="about-box">
 
-        <!-- Bio -->
+        <!-- Left: Bio -->
         <div class="about-bio">
           <p class="bio-p">
-            I'm Mahesh Mishra — a data professional with 3+ years of experience turning
+            I'm Mahesh Mishra — a data professional with 5+ years of experience turning
             complex datasets into clear business decisions. I work across the full data
             lifecycle: building scalable pipelines, training predictive models, and
             translating technical findings into executive-ready dashboards.
@@ -219,11 +221,11 @@
           <div class="bio-facts">
             <div class="bio-fact">
               <span class="bf-icon">📍</span>
-              <span>Based in India — Remote &amp; Hybrid</span>
+              <span>Based in India — Seeking Full-Time, Office/On-Site/Remote/Hybrid Opportunities</span>
             </div>
             <div class="bio-fact">
               <span class="bf-icon">🎓</span>
-              <span>3+ Years across Data &amp; Analytics</span>
+              <span>4+ Years across Data &amp; Analytics</span>
             </div>
             <div class="bio-fact">
               <span class="bf-icon">💼</span>
@@ -231,12 +233,26 @@
             </div>
             <div class="bio-fact">
               <span class="bf-icon">⚡</span>
-              <span>Available to start immediately</span>
+              <span>Available to start as per availability</span>
             </div>
+          </div>
+
+          <!-- Contact quick-links -->
+          <div class="about-contact-pills">
+            <a href="https://www.linkedin.com/in/maheshmishra29/" target="_blank" rel="noopener" class="contact-pill cp-linkedin">
+              <svg class="cp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+              <span>LinkedIn</span>
+              <span class="cp-handle">Mahesh Mishra</span>
+            </a>
+            <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener" class="contact-pill cp-whatsapp">
+              <svg class="cp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07a8.18 8.18 0 0 1-2.41-1.49 9.03 9.03 0 0 1-1.67-2.08c-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12 21.6a9.6 9.6 0 0 1-5.18-1.51l-.37-.22-3.85 1.01 1.03-3.76-.24-.39A9.59 9.59 0 0 1 2.4 12C2.4 6.7 6.7 2.4 12 2.4c2.57 0 4.98.99 6.79 2.8A9.55 9.55 0 0 1 21.6 12c0 5.3-4.3 9.6-9.6 9.6zM12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.1 1.52 5.82L0 24l6.35-1.66A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/></svg>
+              <span>WhatsApp</span>
+              <span class="cp-handle">+91-9910419121</span>
+            </a>
           </div>
         </div>
 
-        <!-- Tools & Links -->
+        <!-- Right: Tools & Skills -->
         <div class="about-info">
           <p class="about-text">
             Comfortable working end-to-end — from raw
@@ -259,17 +275,17 @@
           </div>
 
           <div class="about-links">
-            <a href="https://github.com"   target="_blank" rel="noopener" class="link-pill">GitHub ↗</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener" class="link-pill">LinkedIn ↗</a>
-            <a href="https://kaggle.com"   target="_blank" rel="noopener" class="link-pill">Kaggle ↗</a>
+            <a href="https://github.com/maheshmishraa" target="_blank" rel="noopener" class="link-pill">GitHub ↗</a>
+            <a href="https://kaggle.com"               target="_blank" rel="noopener" class="link-pill">Kaggle ↗</a>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 
   <!-- ═══ MBA DOMAIN ANALYTICS ══════════════════════ -->
-  <section id="domains" class="section domains">
+  <section id="domains" class="section domains page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// MBA DOMAINS</span>
@@ -535,7 +551,7 @@
   </section>
 
   <!-- ═══ SKILLS ════════════════════════════════════ -->
-  <section id="skills" class="section skills">
+  <section id="skills" class="section skills page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// EXPERTISE</span>
@@ -551,13 +567,13 @@
           </div>
           <div class="skill-list">
             <div class="sk-row"><div class="sk-labels"><span>Python</span><span>90%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="90" style="--c:#d4940a"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="90" style="--c:#38D9F5"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Machine Learning</span><span>85%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="85" style="--c:#3574e0"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="85" style="--c:#5666BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Statistics</span><span>80%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="80" style="--c:#0d9488"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="80" style="--c:#5670BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Deep Learning</span><span>70%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="70" style="--c:#7c3aed"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="70" style="--c:#72e8f8"></div></div></div>
           </div>
         </div>
 
@@ -568,13 +584,13 @@
           </div>
           <div class="skill-list">
             <div class="sk-row"><div class="sk-labels"><span>SQL</span><span>95%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="95" style="--c:#d4940a"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="95" style="--c:#38D9F5"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Apache Spark</span><span>78%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="78" style="--c:#3574e0"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="78" style="--c:#5666BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Azure / Databricks</span><span>72%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="72" style="--c:#0d9488"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="72" style="--c:#5670BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>ETL / ELT</span><span>88%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="88" style="--c:#7c3aed"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="88" style="--c:#72e8f8"></div></div></div>
           </div>
         </div>
 
@@ -585,13 +601,13 @@
           </div>
           <div class="skill-list">
             <div class="sk-row"><div class="sk-labels"><span>Power BI</span><span>95%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="95" style="--c:#d4940a"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="95" style="--c:#38D9F5"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>DAX / M Query</span><span>90%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="90" style="--c:#3574e0"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="90" style="--c:#5666BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Tableau</span><span>80%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="80" style="--c:#0d9488"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="80" style="--c:#5670BF"></div></div></div>
             <div class="sk-row"><div class="sk-labels"><span>Data Storytelling</span><span>88%</span></div>
-              <div class="sk-track"><div class="sk-fill" data-w="88" style="--c:#7c3aed"></div></div></div>
+              <div class="sk-track"><div class="sk-fill" data-w="88" style="--c:#72e8f8"></div></div></div>
           </div>
         </div>
 
@@ -600,7 +616,7 @@
   </section>
 
   <!-- ═══ PROJECTS ══════════════════════════════════ -->
-  <section id="projects" class="section projects">
+  <section id="projects" class="section projects page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// PROJECT PORTFOLIO</span>
@@ -748,7 +764,7 @@
   </section>
 
   <!-- ═══ BLOG ══════════════════════════════════════ -->
-  <section id="blog" class="section blog">
+  <section id="blog" class="section blog page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// PERSPECTIVES</span>
@@ -792,7 +808,7 @@
   </section>
 
   <!-- ═══ CONTACT ═══════════════════════════════════ -->
-  <section id="contact" class="section contact">
+  <section id="contact" class="section contact page">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">// COLLABORATE</span>
@@ -851,20 +867,102 @@
     </div>
   </section>
 
-  <!-- ═══ FOOTER ════════════════════════════════════ -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <span class="footer-logo">MM<span class="accent">.</span></span>
-      <p class="footer-line">Data · Insight · Impact</p>
-      <p class="footer-copy">© 2026 Mahesh Mishra — Designed &amp; Built from scratch</p>
-    </div>
-  </footer>
+  <!-- Watermark -->
+  <p class="watermark">© 2026 Mahesh Mishra — Designed &amp; Built from scratch</p>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.16/typed.umd.js"></script>
+  <script src="js/background.js"></script>
+  <script src="js/domains.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- ═══ CORNER SCIENTIST ════════════════════════════ -->
+  <div class="corner-scientist" aria-hidden="true" title="Always thinking...">
+    <svg class="cs-svg" viewBox="0 0 130 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Thought bubbles (rising, animated) -->
+      <g class="thought-group">
+        <!-- bubble 1: sigma / stats -->
+        <circle cx="100" cy="72" r="11" fill="rgba(2,14,38,0.85)" stroke="rgba(56,217,245,0.4)" stroke-width="1" class="tb tb1"/>
+        <text x="100" y="76" text-anchor="middle" font-size="10" fill="#38D9F5" font-family="JetBrains Mono,monospace" class="tb tb1">Σ</text>
+        <!-- bubble 2: AI -->
+        <circle cx="112" cy="50" r="9" fill="rgba(2,14,38,0.85)" stroke="rgba(86,102,191,0.5)" stroke-width="1" class="tb tb2"/>
+        <text x="112" y="54" text-anchor="middle" font-size="7" fill="#5666BF" font-family="JetBrains Mono,monospace" class="tb tb2">AI</text>
+        <!-- bubble 3: chart icon -->
+        <circle cx="98" cy="31" r="10" fill="rgba(2,14,38,0.85)" stroke="rgba(56,217,245,0.35)" stroke-width="1" class="tb tb3"/>
+        <text x="98" y="35" text-anchor="middle" font-size="10" fill="#38D9F5" class="tb tb3">📊</text>
+        <!-- bubble 4: ML -->
+        <circle cx="115" cy="14" r="8" fill="rgba(2,14,38,0.85)" stroke="rgba(86,102,191,0.4)" stroke-width="1" class="tb tb4"/>
+        <text x="115" y="18" text-anchor="middle" font-size="6" fill="#72e8f8" font-family="JetBrains Mono,monospace" class="tb tb4">ML</text>
+        <!-- tiny connector dots -->
+        <circle cx="95" cy="89" r="2.5" fill="rgba(56,217,245,0.35)" class="tb tb1"/>
+        <circle cx="97" cy="82" r="1.8" fill="rgba(56,217,245,0.25)" class="tb tb1"/>
+      </g>
+
+      <!-- Desk surface -->
+      <rect x="4" y="128" width="122" height="6" rx="3" fill="rgba(86,102,191,0.25)" stroke="rgba(56,217,245,0.15)" stroke-width="1"/>
+
+      <!-- Laptop screen -->
+      <rect x="28" y="72" width="70" height="50" rx="5" fill="rgba(2,14,38,0.9)" stroke="rgba(56,217,245,0.45)" stroke-width="1.2"/>
+      <!-- Screen glow -->
+      <rect x="28" y="72" width="70" height="50" rx="5" fill="rgba(56,217,245,0.04)" class="screen-glow"/>
+      <!-- Screen titlebar -->
+      <rect x="28" y="72" width="70" height="12" rx="5" fill="rgba(86,102,191,0.3)"/>
+      <circle cx="36" cy="78" r="2.5" fill="rgba(239,68,68,0.7)"/>
+      <circle cx="44" cy="78" r="2.5" fill="rgba(234,179,8,0.5)"/>
+      <circle cx="52" cy="78" r="2.5" fill="rgba(34,197,94,0.7)"/>
+      <!-- Code lines on screen - animate typing -->
+      <rect x="34" y="90" width="30" height="3" rx="1.5" fill="rgba(56,217,245,0.5)" class="code-line cl1"/>
+      <rect x="34" y="96" width="45" height="3" rx="1.5" fill="rgba(86,102,191,0.6)" class="code-line cl2"/>
+      <rect x="34" y="102" width="20" height="3" rx="1.5" fill="rgba(56,217,245,0.35)" class="code-line cl3"/>
+      <rect x="34" y="108" width="38" height="3" rx="1.5" fill="rgba(86,102,191,0.45)" class="code-line cl4"/>
+      <!-- Cursor blink -->
+      <rect x="34" y="114" width="2" height="6" rx="1" fill="#38D9F5" class="cursor-blink"/>
+      <!-- Laptop hinge -->
+      <rect x="28" y="121" width="70" height="4" rx="2" fill="rgba(86,102,191,0.35)"/>
+      <!-- Laptop base -->
+      <rect x="22" y="124" width="82" height="6" rx="3" fill="rgba(86,102,191,0.25)" stroke="rgba(56,217,245,0.15)" stroke-width="1"/>
+
+      <!-- Body / torso -->
+      <rect x="44" y="112" width="38" height="18" rx="8" fill="rgba(86,102,191,0.45)" stroke="rgba(56,217,245,0.2)" stroke-width="1"/>
+
+      <!-- Left arm on desk -->
+      <path d="M44 120 Q28 122 22 128" stroke="rgba(86,102,191,0.55)" stroke-width="7" stroke-linecap="round" fill="none" class="arm-left"/>
+      <!-- Right arm on desk -->
+      <path d="M82 120 Q98 122 104 128" stroke="rgba(86,102,191,0.55)" stroke-width="7" stroke-linecap="round" fill="none" class="arm-right"/>
+
+      <!-- Neck -->
+      <rect x="59" y="104" width="8" height="10" rx="3" fill="rgba(86,102,191,0.4)"/>
+
+      <!-- Head — tilted slightly, thinking pose -->
+      <g class="head-group">
+        <!-- Head shape -->
+        <ellipse cx="63" cy="94" rx="16" ry="15" fill="rgba(86,102,191,0.55)" stroke="rgba(56,217,245,0.4)" stroke-width="1.5"/>
+        <!-- Hair -->
+        <path d="M48 90 Q50 76 63 74 Q76 76 78 90" fill="rgba(56,217,245,0.18)" stroke="rgba(56,217,245,0.3)" stroke-width="1"/>
+        <!-- Eyes — one squinting (thinking) -->
+        <ellipse cx="57" cy="92" rx="2.5" ry="2.5" fill="#38D9F5" opacity="0.9"/>
+        <ellipse cx="69" cy="92" rx="2.5" ry="1.2" fill="#38D9F5" opacity="0.9"/>
+        <!-- Glasses -->
+        <rect x="53" y="89" width="9"  height="7" rx="3" fill="none" stroke="rgba(56,217,245,0.5)" stroke-width="1"/>
+        <rect x="65" y="89" width="9"  height="7" rx="3" fill="none" stroke="rgba(56,217,245,0.5)" stroke-width="1"/>
+        <line x1="62" y1="92" x2="65" y2="92" stroke="rgba(56,217,245,0.4)" stroke-width="1"/>
+        <line x1="47" y1="92" x2="53" y2="92" stroke="rgba(56,217,245,0.3)" stroke-width="1"/>
+        <line x1="74" y1="92" x2="79" y2="92" stroke="rgba(56,217,245,0.3)" stroke-width="1"/>
+        <!-- Thinking expression — slight smirk -->
+        <path d="M58 100 Q63 103 68 101" stroke="rgba(56,217,245,0.6)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- Hand on chin (thinking pose) -->
+        <path d="M48 98 Q44 100 44 104 Q46 106 50 104" stroke="rgba(86,102,191,0.7)" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="48" cy="104" rx="5" ry="4" fill="rgba(86,102,191,0.5)" stroke="rgba(56,217,245,0.25)" stroke-width="1"/>
+      </g>
+
+    </svg>
+    <div class="cs-label">thinking...</div>
+  </div>
+
   <script src="js/background.js"></script>
   <script src="js/domains.js"></script>
   <script src="js/app.js"></script>

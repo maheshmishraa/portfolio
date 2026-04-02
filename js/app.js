@@ -78,12 +78,13 @@
         'Predictive Models',
         'Data Science Solutions',
       ],
-      typeSpeed:  52,
-      backSpeed:  32,
-      backDelay:  2400,
-      startDelay: 700,
-      loop:       true,
-      cursorChar: '_',
+      typeSpeed:      40,
+      backSpeed:      20,
+      backDelay:     2800,
+      startDelay:     600,
+      loop:           true,
+      showCursor:     false,
+      smartBackspace: false,
     });
   }
 
@@ -229,14 +230,55 @@
   });
 
   /* ══════════════════════════════════════════════
-     11. NAVBAR SCROLL
+     11. PAGE SWITCHER
   ══════════════════════════════════════════════ */
-  const navbar = document.getElementById('navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 60);
-    }, { passive: true });
+  const navbar  = document.getElementById('navbar');
+  const pages   = document.querySelectorAll('.page');
+  const navLinks = document.querySelectorAll('[data-page]');
+
+  function switchPage(targetId) {
+    const current = document.querySelector('.page.active');
+    const next    = document.getElementById(targetId);
+    if (!next || next === current) return;
+
+    // Mark active nav item
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === targetId));
+
+    // Animate out current, then swap
+    if (current) {
+      current.classList.add('page-out');
+      setTimeout(() => {
+        current.classList.remove('active', 'page-out');
+      }, 250);
+    }
+
+    // Small delay so page-out starts first
+    setTimeout(() => {
+      next.classList.add('active');
+      next.scrollTop = 0; // reset internal scroll
+    }, 80);
+
+    // Navbar scrolled state — always show scrolled style when not on hero
+    if (navbar) navbar.classList.toggle('scrolled', targetId !== 'hero');
   }
+
+  // Wire all [data-page] links
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      switchPage(link.dataset.page);
+      // Close mobile drawer if open
+      const burger = document.getElementById('hamburger');
+      const drawer = document.getElementById('mobile-drawer');
+      if (burger && drawer) {
+        burger.classList.remove('open');
+        drawer.classList.remove('open');
+      }
+    });
+  });
+
+  // Mark initial active nav item
+  navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === 'hero'));
 
   /* ══════════════════════════════════════════════
      11b. BLOG CAROUSEL
@@ -311,24 +353,21 @@
       const open = burger.classList.toggle('open');
       drawer.classList.toggle('open', open);
     });
-    drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        burger.classList.remove('open');
-        drawer.classList.remove('open');
-      });
-    });
   }
 
   /* ══════════════════════════════════════════════
-     13. SMOOTH SCROLL
+     13. HERO BUTTONS → page switch
   ══════════════════════════════════════════════ */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    const href = a.getAttribute('href');
+    if (href === '#' || href === '#hero') return;
+    const targetId = href.replace('#', '');
+    if (document.getElementById(targetId)?.classList.contains('page')) {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        switchPage(targetId);
+      });
+    }
   });
 
   /* ══════════════════════════════════════════════

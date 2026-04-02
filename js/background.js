@@ -25,8 +25,8 @@
   const CONNECT_DIST = 170;
   const MAX_PAIRS    = 600;
 
-  // Professional palette: navy/gold/steel-blue — very muted
-  const COLORS = [0x2a4a7f, 0x8a6200, 0x1a5565, 0x3b4f7a];
+  // Experimental palette: DeFi Data — deep navy/indigo/electric-yellow
+  const COLORS = [0x222A59, 0x5666BF, 0x5670BF, 0x0a1a38];
 
   /* ── Nodes ───────────────────────────────────────────── */
   const meshes = [], vels = [];
