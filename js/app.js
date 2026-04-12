@@ -10,6 +10,101 @@
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
 
+  // Initial states for Boot Sequence Reveal
+  gsap.set(['.hero-badge', '.hero-name', '.hero-tagline', '.hero-desc', '.hero-actions', '.hero-stats', '.bento-card'], { opacity: 0, y: 36 });
+
+  /* ══════════════════════════════════════════════
+     0. DATA ENGINE (The "Prodigy" Foundations)
+     Separates content from view to enable scale.
+  ══════════════════════════════════════════════ */
+  (function initDataEngine() {
+    if (typeof MAHESH_DATA === 'undefined') return;
+
+    // A. Hero Stats
+    const heroMount = document.getElementById('hero-stats-mount');
+    if (heroMount) {
+      heroMount.innerHTML = `
+        <div class="stat">
+          <span class="stat-n" data-count="${MAHESH_DATA.stats.projects}">${MAHESH_DATA.stats.projects}</span><span class="stat-plus">+</span>
+          <span class="stat-l">High-Stake Projects</span>
+        </div>
+        <span class="stat-sep"></span>
+        <div class="stat">
+          <span class="stat-n" data-count="${MAHESH_DATA.stats.experience_years}">${MAHESH_DATA.stats.experience_years}</span><span class="stat-plus"></span>
+          <span class="stat-l">Years analytical exp.</span>
+        </div>
+        <span class="stat-sep"></span>
+        <div class="stat">
+          <span class="stat-n" data-count="${MAHESH_DATA.stats.domains}">${MAHESH_DATA.stats.domains}+</span>
+          <span class="stat-l">Global Domains</span>
+        </div>
+      `;
+    }
+
+    // B. Bento Stats
+    const bentoImpact = document.getElementById('bento-stat-impact');
+    const bentoData = document.getElementById('bento-stat-data');
+    if (bentoImpact) {
+      bentoImpact.innerHTML = `
+        <div class="bs-icon">🚀</div>
+        <div class="bs-val">${MAHESH_DATA.stats.efficiency_lift}</div>
+        <div class="bs-lab">Reporting Efficiency Lift</div>
+      `;
+    }
+    if (bentoData) {
+      bentoData.innerHTML = `
+        <div class="bs-icon">💾</div>
+        <div class="bs-val">${MAHESH_DATA.stats.hours_saved}hr</div>
+        <div class="bs-lab">Saved / Week via Automation</div>
+      `;
+    }
+
+    // C. Timeline Injection
+    const timelineMount = document.getElementById('timeline-mount');
+    if (timelineMount) {
+      timelineMount.innerHTML = MAHESH_DATA.timeline.map((item, idx) => `
+        <div class="tl-item tl-${item.cat} ${item.current ? 'tl-current' : ''}">
+          <div class="tl-left">
+            <div class="tl-badge tl-badge-${item.cat}">
+              <img src="${item.logo}" alt="Logo" class="badge-logo">
+            </div>
+            ${item.current ? '' : '<div class="tl-spine"></div>'}
+          </div>
+          <div class="tl-content">
+            <span class="tl-type ${item.current ? 'tl-type-now' : ''}">${item.type}</span>
+            <p class="tl-title">${item.title}</p>
+            <p class="tl-org">${item.org}</p>
+            <span class="tl-date">${item.date}</span>
+            <span class="tl-detail">${item.detail}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // D. Skills Injection
+    const skillsMount = document.getElementById('skills-mount');
+    if (skillsMount) {
+      skillsMount.innerHTML = MAHESH_DATA.skills.map(cat => `
+        <div class="skill-card">
+          <div class="skill-card-hd">
+            <span class="sk-icon">${cat.icon}</span>
+            <h3>${cat.category}</h3>
+          </div>
+          <div class="skill-list">
+            ${cat.items.map(sk => `
+              <div class="sk-row">
+                <div class="sk-labels"><span>${sk.name}</span><span>${sk.val}%</span></div>
+                <div class="sk-track">
+                  <div class="sk-fill" data-w="${sk.val}" style="--c:${sk.color}"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+  })();
+
   /* ══════════════════════════════════════════════
      1. CUSTOM CURSOR
   ══════════════════════════════════════════════ */
@@ -37,24 +132,6 @@
     });
   }
 
-  /* ══════════════════════════════════════════════
-     2. SKILLS TICKER
-  ══════════════════════════════════════════════ */
-  const tickerSkills = [
-    'Machine Learning', 'Python', 'R', 'SQL', 'Excel',
-    'PowerPoint', 'Word', 'Neural Networks', 'Clustering',
-    'LLMs', 'Gen-AI', 'Stakeholder Management', 'Research',
-    'Power BI', 'Tableau', 'n8n', 'Automation', 'KNIME',
-    'QlikSense', 'MS-Project',
-  ];
-
-  const track = document.getElementById('ticker-track');
-  if (track) {
-    const html = [...tickerSkills, ...tickerSkills].map(skill =>
-      `<span class="tick-item">⬡ ${skill}</span><span class="tick-sep">·</span>`
-    ).join('');
-    track.innerHTML = html;
-  }
 
   /* ══════════════════════════════════════════════
      3. TYPED.JS
@@ -62,11 +139,10 @@
   if (document.getElementById('typed-roles') && typeof Typed !== 'undefined') {
     new Typed('#typed-roles', {
       strings: [
-        'ML Pipelines',
-        'Power BI Dashboards',
-        'ETL Data Flows',
-        'Predictive Models',
-        'Data Science Solutions',
+        'Scientist by Root (Biotech)',
+        'Analyst by Trade (WNS Global)',
+        'Strategist by Design (GIM Big Data)',
+        'Data Storytelling Specialist',
       ],
       typeSpeed:      40,
       backSpeed:      20,
@@ -79,23 +155,39 @@
   }
 
   /* ══════════════════════════════════════════════
-     4. HERO ENTRANCE
+     0. SYSTEM SYNC & MICRO-HAPTICS
   ══════════════════════════════════════════════ */
-  gsap.set(['.hero-badge','.hero-name','.hero-tagline','.hero-desc','.hero-actions','.hero-stats'], { y: 36 });
-  gsap.set('.dashboard-card', { y: 24 });
+  window.addEventListener('bootComplete', (e) => {
+    const isInstant = e.detail && e.detail.instant;
 
-  gsap.timeline({ delay: 0.05 })
-    .to('.hero-badge',   { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0)
-    .to('.hero-name',    { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, 0.12)
-    .to('.hero-tagline', { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.24)
-    .to('.hero-desc',    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.34)
-    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.44)
-    .to('.hero-stats',   { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.54)
-    .to('.dashboard-card',{ opacity: 1, y: 0, duration: 0.9,  ease: 'power3.out' }, 0.28);
+    if (isInstant) {
+      // Instant reveal - no delay, no movement
+      gsap.set(['.hero-badge', '.hero-name', '.hero-tagline', '.hero-desc', '.hero-actions', '.hero-stats', '.bento-card'], { opacity: 1, y: 0 });
+    } else {
+      // Staggered cinematic reveal
+      gsap.timeline({ delay: 0.1 })
+        .to('.hero-badge',   { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0)
+        .to('.hero-name',    { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, 0.12)
+        .to('.hero-tagline', { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.24)
+        .to('.hero-desc',    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.34)
+        .to('.hero-actions', { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.44)
+        .to('.hero-stats',   { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.54)
+        .to('.bento-card',   { opacity: 1, y: 0, duration: 0.8,  ease: 'power3.out', stagger: 0.1 }, 0.3);
+    }
+  });
 
-  /* ══════════════════════════════════════════════
-     5. STAT COUNTERS
-  ══════════════════════════════════════════════ */
+  document.addEventListener('mousemove', e => {
+    const cards = document.querySelectorAll('.bento-card, .skill-card, .pj-card');
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  /* ── DATA VISUALIZATION REVEALS ── */
   document.querySelectorAll('.stat-n').forEach(el => {
     const target = parseInt(el.dataset.count, 10);
     ScrollTrigger.create({
@@ -120,50 +212,7 @@
     });
   });
 
-  /* ══════════════════════════════════════════════
-     7. SCROLL REVEAL — sections & cards
-  ══════════════════════════════════════════════ */
-  gsap.utils.toArray('.section-header').forEach(el => {
-    gsap.fromTo(el, { opacity: 0, y: 32 }, {
-      opacity: 1, y: 0, duration: 0.75, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 86%' },
-    });
-  });
-
-  // Cards with stagger
-  ['.blog-card', '.skill-card', '.kpi-tile'].forEach(sel => {
-    gsap.utils.toArray(sel).forEach((el, i) => {
-      gsap.fromTo(el, { opacity: 0, y: 28 }, {
-        opacity: 1, y: 0, duration: 0.65,
-        delay: (i % 4) * 0.08,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 90%' },
-      });
-    });
-  });
-
-  // Domain stage
-  gsap.fromTo('.domain-stage', { opacity: 0, y: 24 }, {
-    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
-    scrollTrigger: { trigger: '.domain-stage', start: 'top 85%' },
-  });
-
-  /* ══════════════════════════════════════════════
-     8. ABOUT BIO — fade in paragraphs on scroll
-  ══════════════════════════════════════════════ */
-  gsap.utils.toArray('.bio-p').forEach((el, i) => {
-    gsap.fromTo(el, { opacity: 0, y: 20 }, {
-      opacity: 1, y: 0, duration: 0.65,
-      delay: i * 0.1,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 88%' },
-    });
-  });
-
-  gsap.fromTo('.bio-facts', { opacity: 0, y: 16 }, {
-    opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-    scrollTrigger: { trigger: '.bio-facts', start: 'top 90%' },
-  });
+  /* sections 7 & 8 — scroll reveals handled by scroll-effects.js */
 
   /* ══════════════════════════════════════════════
      9. PROJECT TABS
@@ -220,44 +269,23 @@
   });
 
   /* ══════════════════════════════════════════════
-     11. PAGE SWITCHER
+     11. SCROLL-BASED NAVIGATION
   ══════════════════════════════════════════════ */
-  const navbar  = document.getElementById('navbar');
-  const pages   = document.querySelectorAll('.page');
+  const navbar   = document.getElementById('navbar');
   const navLinks = document.querySelectorAll('[data-page]');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
 
-  function switchPage(targetId) {
-    const current = document.querySelector('.page.active');
-    const next    = document.getElementById(targetId);
-    if (!next || next === current) return;
+  const navOffset = () => (navbar?.offsetHeight || 68) + 34; // nav + ticker
 
-    // Update nav + navbar immediately
-    navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === targetId));
-    if (navbar) navbar.classList.toggle('scrolled', targetId !== 'hero');
-
-    // Dispatch event so animations.js can react (nav pill, section-specific effects)
-    document.dispatchEvent(new CustomEvent('pageswitch', { detail: { from: current?.id, to: targetId } }));
-
-    // Delegate visual transition to animations.js if registered
-    if (typeof window.doPageWipe === 'function') {
-      window.doPageWipe(current, next);
-      return;
-    }
-
-    // Fallback: original CSS fade
-    if (current) {
-      current.classList.add('page-out');
-      setTimeout(() => current.classList.remove('active', 'page-out'), 250);
-    }
-    setTimeout(() => { next.classList.add('active'); next.scrollTop = 0; }, 80);
-  }
-
-  // Wire all [data-page] links
+  // Smooth-scroll on nav / data-page link click
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
-      switchPage(link.dataset.page);
-      // Close mobile drawer if open
+      const target = document.getElementById(link.dataset.page);
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - navOffset();
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
       const burger = document.getElementById('hamburger');
       const drawer = document.getElementById('mobile-drawer');
       if (burger && drawer) {
@@ -267,8 +295,30 @@
     });
   });
 
-  // Mark initial active nav item
-  navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === 'hero'));
+  // Active nav highlight + navbar style on scroll
+  let lastActiveId = 'hero';
+  function updateActiveNav() {
+    const scrollY  = window.scrollY;
+    const offset   = navOffset() + 60;
+    let currentId  = sections[0]?.id || 'hero';
+
+    for (const section of sections) {
+      if (section.offsetTop - offset <= scrollY) {
+        currentId = section.id;
+      }
+    }
+
+    if (currentId !== lastActiveId) {
+      lastActiveId = currentId;
+      navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === currentId));
+      document.dispatchEvent(new CustomEvent('pageswitch', { detail: { to: currentId } }));
+    }
+
+    if (navbar) navbar.classList.toggle('scrolled', scrollY > 20);
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
 
   /* ══════════════════════════════════════════════
      11b. BLOG CAROUSEL
@@ -346,16 +396,18 @@
   }
 
   /* ══════════════════════════════════════════════
-     13. HERO BUTTONS → page switch
+     13. ANCHOR LINKS → smooth scroll
   ══════════════════════════════════════════════ */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     const href = a.getAttribute('href');
     if (href === '#' || href === '#hero') return;
     const targetId = href.replace('#', '');
-    if (document.getElementById(targetId)?.classList.contains('page')) {
+    const target = document.getElementById(targetId);
+    if (target) {
       a.addEventListener('click', e => {
         e.preventDefault();
-        switchPage(targetId);
+        const top = target.getBoundingClientRect().top + window.scrollY - navOffset();
+        window.scrollTo({ top, behavior: 'smooth' });
       });
     }
   });
@@ -423,4 +475,370 @@
     });
   }
 
+  /* ══════════════════════════════════════════════
+     16. SQL SECRET SAUCE TYPEWRITER
+  ══════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════
+     16. INTERACTIVE SQL TERMINAL ENGINE
+  ══════════════════════════════════════════════ */
+  (function () {
+    const codeEl       = document.getElementById('code-secret-sauce');
+    const terminalBody = document.getElementById('terminal-body');
+    const historyEl    = document.getElementById('term-history');
+    const promptLine   = document.getElementById('term-prompt-line');
+    const displayInput = document.getElementById('term-current-input');
+    const hiddenInput  = document.getElementById('term-hidden-input');
+
+    if (!codeEl || !hiddenInput) return;
+
+    const introQuery = [
+      'WITH CustomerLTV AS (',
+      '  SELECT user_id, SUM(rev) as ltv',
+      '  FROM analytics.orders',
+      '  GROUP BY 1',
+      ')',
+      'SELECT *, PERCENT_RANK() OVER (',
+      '  ORDER BY ltv DESC',
+      ') as p_score',
+      'FROM CustomerLTV',
+      'WHERE ltv > 50000;'
+    ].join('\n');
+
+    let charIdx = 0;
+    let isIntroFinished = false;
+
+    function typeIntro() {
+      if (charIdx < introQuery.length) {
+        codeEl.textContent += introQuery.charAt(charIdx);
+        charIdx++;
+        const delay = introQuery.charAt(charIdx-1) === '\n' ? 300 : (Math.random() * 25 + 15);
+        setTimeout(typeIntro, delay);
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+      } else {
+        finishIntro();
+      }
+    }
+
+    function finishIntro() {
+      isIntroFinished = true;
+      promptLine.style.display = 'flex';
+      hiddenInput.focus();
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    // ScrollTrigger to start typing
+    ScrollTrigger.create({
+      trigger: '.hero-bento',
+      start: 'top 80%',
+      onEnter: () => setTimeout(typeIntro, 800),
+      once: true
+    });
+
+    // Interaction Listeners
+    terminalBody.addEventListener('click', () => {
+      if (isIntroFinished) hiddenInput.focus();
+    });
+
+    hiddenInput.addEventListener('input', () => {
+      displayInput.textContent = hiddenInput.value;
+    });
+
+    hiddenInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = hiddenInput.value.trim().toLowerCase();
+        if (cmd) processCommand(cmd);
+        hiddenInput.value = '';
+        displayInput.textContent = '';
+      }
+    });
+
+    function addHistory(cmd, response) {
+      const line = document.createElement('div');
+      line.className = 'term-history-line';
+      line.innerHTML = `<span class="term-prompt">mahesh@portfolio:~$</span> <span class="cmd">${cmd}</span><br><span class="res">${response}</span>`;
+      historyEl.appendChild(line);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    function processCommand(cmd) {
+      switch (cmd) {
+        case 'help':
+          addHistory(cmd, 'Available commands: [whoami, ls, clear, contact, help, skills]');
+          break;
+        case 'whoami':
+          addHistory(cmd, 'Mahesh Mishra: Lead Analytics Professional. I turn raw data into strategic gold.');
+          break;
+        case 'ls':
+          addHistory(cmd, '<span style="color:#58a6ff">resume.pdf</span>  <span style="color:#58a6ff">projects/</span>  <span style="color:#58a6ff">certifications.tx</span>');
+          break;
+        case 'clear':
+          historyEl.innerHTML = '';
+          codeEl.textContent = ''; // Also clear the intro for a fresh start
+          break;
+        case 'contact':
+          addHistory(cmd, 'Initializing contact sequence...');
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          break;
+        case 'skills':
+          addHistory(cmd, 'Advanced SQL, Python (Pandas/Scikit), Tableau, Machine Learning, ETL Pipelines.');
+          break;
+        case 'sudo':
+          addHistory(cmd, '<span style="color:#ff7b72">Error: Administrator privileges required. Nice try!</span>');
+          break;
+        case 'exit':
+          addHistory(cmd, 'The matrix is everywhere, Neo. You cannot exit.');
+          break;
+        default:
+          addHistory(cmd, `Command not found: ${cmd}. Type 'help' for options.`);
+      }
+    }
+  })();
+
+  /* ══════════════════════════════════════════════
+     16b. PHOTO MAGNIFY TOOLTIP
+  ══════════════════════════════════════════════ */
+  (function () {
+    const photo = document.querySelector('.id-photo');
+    if (!photo) return;
+
+    // Create floating tooltip img, appended to body to escape overflow:hidden
+    const magnify = document.createElement('img');
+    magnify.className = 'photo-magnify';
+    magnify.src = photo.src;
+    magnify.alt = 'Mahesh Mishra — Enlarged';
+    document.body.appendChild(magnify);
+
+    photo.addEventListener('mouseenter', () => {
+      const rect = photo.getBoundingClientRect();
+      // Position to the LEFT of the photo, vertically centered
+      magnify.style.left = (rect.left - 320) + 'px';
+      magnify.style.top  = (rect.top + rect.height / 2 - 150) + 'px';
+
+      magnify.classList.add('visible');
+    });
+
+    photo.addEventListener('mouseleave', () => {
+      magnify.classList.remove('visible');
+    });
+  })();
+
+  /* ══════════════════════════════════════════════
+     17. EXECUTIVE INSIGHT HUD ENGINE
+  ══════════════════════════════════════════════ */
+  (function () {
+    const hud        = document.getElementById('insight-hud');
+    const hudContent = document.getElementById('hud-content');
+    if (!hud || !hudContent) return;
+
+    const defaultText = "Awaiting system interaction...";
+
+    function typeHUD(text) {
+      hudContent.style.opacity = 0;
+      setTimeout(() => {
+        hudContent.textContent = text;
+        hudContent.style.opacity = 1;
+      }, 200);
+    }
+
+    // Match rules: [CSS selector] -> message
+    const rules = [
+      ['#bento-id-card',    'IDENTITY VERIFIED: Mahesh Mishra. Clearance: Lead Data Professional.'],
+      ['#bento-stat-impact','DATA INSIGHT: Analytics model delivered 15.4% efficiency lift.'],
+      ['#bento-stat-data',  'SYSTEM LOAD: 1.2TB+ processed monthly via optimized ETL pipelines.'],
+      ['#terminal-body',    'INTERFACE: Terminal REPL active. Type "help" for commands.'],
+      ['.bento-terminal',   'INTERFACE: Interactive SQL terminal. Click to enter commands.'],
+      ['#sk-ds-ml',         'SKILL PROFILE: Data Science & ML — predictive modeling specialist.'],
+      ['#sk-de-etl',        'SKILL PROFILE: Data Engineering — architecting scalable data flows.'],
+      ['#sk-viz',           'SKILL PROFILE: Analytics & BI — turning data into executive gold.'],
+      ['.tl-item',          'CAREER LOG: Professional milestone with measurable ROI.'],
+      ['.pj-card',          'PROJECT FILE: Business-impact case study. Click ↗ to view.'],
+      ['.cert-card',        'CERTIFICATION: Verified professional credential.'],
+      ['.skill-card',       'COMPETENCY MODULE: Core technical proficiency area.'],
+    ];
+
+    document.addEventListener('mouseover', (e) => {
+      for (const [selector, message] of rules) {
+        if (e.target.closest(selector)) {
+          hud.classList.add('active');
+          if (hudContent.textContent !== message) {
+            typeHUD(message);
+          }
+          return;
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      // Only reset if leaving an interactive element entirely
+      const still = e.relatedTarget;
+      for (const [selector] of rules) {
+        if (still && still.closest && still.closest(selector)) return;
+      }
+      hud.classList.remove('active');
+    });
+  })();
+
+  /* ══════════════════════════════════════════════
+     18. SPOTLIGHT HOVER EFFECT
+  ══════════════════════════════════════════════ */
+  (function () {
+    const cards = document.querySelectorAll('.bento-card, .skill-card');
+    document.addEventListener('mousemove', (e) => {
+      for (const card of cards) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      }
+    });
+  })();
+
+  /* ══════════════════════════════════════════════
+     19. GLASSMORPHIC DEEP DIVE DRAWER
+  ══════════════════════════════════════════════ */
+  (function () {
+    const drawer = document.getElementById('project-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    if (!drawer || !overlay) return;
+
+    const closeBtn = document.getElementById('drawer-close');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerImg = document.getElementById('drawer-img');
+    const drawerTags = document.getElementById('drawer-tags');
+    const drawerDesc = document.getElementById('drawer-desc');
+    const drawerInsight = document.getElementById('drawer-insight');
+    const drawerImpact = document.getElementById('drawer-impact');
+    const drawerLink = document.getElementById('drawer-link');
+
+    function openDrawer(card) {
+      drawerTitle.textContent = card.querySelector('.pj-title')?.textContent || 'Project Review';
+      
+      const img = card.querySelector('.pj-img');
+      if (img) {
+        drawerImg.src = img.src;
+        drawerImg.style.display = 'block';
+      } else {
+        drawerImg.style.display = 'none';
+      }
+
+      const tags = card.querySelector('.pj-tags');
+      drawerTags.innerHTML = tags ? tags.innerHTML : '';
+
+      drawerDesc.textContent = card.querySelector('.pj-desc')?.textContent || '';
+      
+      drawerInsight.textContent = card.querySelector('.pj-insight p')?.textContent || 'Analysis uncovered deep system optimizations leading to clear actionable deliverables without standard overhead execution parameters.';
+      drawerImpact.textContent = card.querySelector('.pj-impact p')?.textContent || 'Drove systemic efficiencies through data infrastructure alignment generating substantial professional ROI.';
+
+      const link = card.querySelector('.pj-link');
+      if (link && link.href) {
+        drawerLink.href = link.href;
+        drawerLink.style.display = 'inline-block';
+      } else {
+        drawerLink.style.display = 'none';
+      }
+
+      drawer.classList.add('open');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.pj-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      
+      // Stop underlying links
+      const innerLinks = card.querySelectorAll('a');
+      innerLinks.forEach(l => l.addEventListener('click', e => e.stopPropagation()));
+
+      card.addEventListener('click', () => openDrawer(card));
+    });
+
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+  })();
+
+  /* ══════════════════════════════════════════════
+     20. THEME TOGGLE
+  ══════════════════════════════════════════════ */
+  (function() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if(!toggleBtn) return;
+    
+    // Check local storage or preference. Default is light mode.
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  })();
+
+  /* ══════════════════════════════════════════════
+     21. DIAGNOSTICS PRELOADER
+  ══════════════════════════════════════════════ */
+  (function() {
+    const preloader = document.getElementById('diagnostics-preloader');
+    if (!preloader) return;
+
+    if (sessionStorage.getItem('preloader_shown')) {
+      preloader.style.display = 'none';
+      return;
+    }
+
+    // Sequence the terminal typing
+    const l1 = document.getElementById('loader-line-1');
+    const l2 = document.getElementById('loader-line-2');
+    const l3 = document.getElementById('loader-line-3');
+
+    setTimeout(() => {
+      if(l1) l1.querySelector('.cursor-blink').style.display = 'none';
+      if(l2) l2.style.display = 'block';
+    }, 600);
+
+    setTimeout(() => {
+      if(l2) l2.querySelector('.cursor-blink').style.display = 'none';
+      if(l3) l3.style.display = 'block';
+    }, 1400);
+
+    setTimeout(() => {
+      preloader.classList.add('slide-up');
+      sessionStorage.setItem('preloader_shown', 'true');
+    }, 2000);
+
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 2800);
+  })();
+
+})();
+
+/* ----------------------------------------------
+   22. NARRATIVE WEAVE ENGINE (Storyteller)
+---------------------------------------------- */
+(function() { const hud = document.getElementById('hud-content'); const nodes = document.querySelectorAll('.milestone-node'); if (!hud) return;
+const storyPoints = [
+  { id: 'hero',     msg: '[SYS] INITIALIZING: Analyzing Data Strategist Profile...' },
+  { id: 'about',    msg: '[SYS] RETRIEVING ARCHIVES: Biotech & Scientific Foundations detected.', node: 0 },
+  { id: 'skills',   msg: '[SYS] CORE STACK: Advanced SQL, Python & ML Nodes synchronized.' },
+  { id: 'projects', msg: '[SYS] ANALYZING IMPACT: Quantifiable business lift identified.', node: 1 },
+  { id: 'learning', msg: '[SYS] DATA VECTOR: Advanced Big Data Architecture mapped.', node: 2 },
+  { id: 'contact',  msg: '[SYS] UPLINK READY: Encryption secure. Awaiting communication.' }
+];
+storyPoints.forEach((point) => { const section = document.getElementById(point.id); if (!section) return; ScrollTrigger.create({ trigger: section, start: 'top 40%', end: 'bottom 40%', onEnter: () => updateNarrative(point), onEnterBack: () => updateNarrative(point) }); });
+function updateNarrative(point) { gsap.to(hud, { opacity: 0, y: 5, duration: 0.2, onComplete: () => { hud.textContent = point.msg; gsap.to(hud, { opacity: 1, y: 0, duration: 0.3 }); } }); if (point.node !== undefined) { nodes.forEach((n, idx) => { if (idx === point.node) n.classList.add('active'); else n.classList.remove('active'); }); } else { nodes.forEach(n => n.classList.remove('active')); } }
 })();

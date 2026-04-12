@@ -13,6 +13,9 @@
   /* ── Scene ───────────────────────────────────────────── */
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 2000);
+  
+  window._bgScene  = scene;
+  window._bgCamera = camera;
   camera.position.z = 580;
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -25,29 +28,28 @@
   const CONNECT_DIST = 170;
   const MAX_PAIRS    = 600;
 
-  // Experimental palette: DeFi Data — deep navy/indigo/electric-yellow
-  const COLORS = [0x6366F1, 0x8B5CF6, 0xB45309, 0xA78BFA];
+  // Experimental palette: Executive Data — deep navy/indigo/gold-accent
+  const COLORS = [0x4338CA, 0x6366F1, 0x4F46E5, 0x10B981];
 
   /* ── Nodes ───────────────────────────────────────────── */
   const meshes = [], vels = [];
-  const geo    = new THREE.SphereGeometry(1.4, 5, 5);
+  const geo    = new THREE.SphereGeometry(1.2, 6, 6);
 
   for (let i = 0; i < COUNT; i++) {
     const mat  = new THREE.MeshBasicMaterial({
       color:       COLORS[i % COLORS.length],
       transparent: true,
-      opacity:     0.5 + Math.random() * 0.4,
+      opacity:     0.4 + Math.random() * 0.4,
     });
     const m = new THREE.Mesh(geo, mat);
-    m.position.set(
-      (Math.random() - 0.5) * SPREAD.x,
-      (Math.random() - 0.5) * SPREAD.y,
-      (Math.random() - 0.5) * SPREAD.z
-    );
+    const ox = (Math.random() - 0.5) * SPREAD.x;
+    const oy = (Math.random() - 0.5) * SPREAD.y;
+    const oz = (Math.random() - 0.5) * SPREAD.z;
+    m.position.set(ox, oy, oz);
     vels.push({
-      x: (Math.random() - 0.5) * 0.28,
-      y: (Math.random() - 0.5) * 0.28,
-      z: (Math.random() - 0.5) * 0.15,
+      x: 0, y: 0, z: 0,
+      ox: ox, oy: oy, oz: oz,
+      seed: Math.random() * Math.PI * 2
     });
     scene.add(m);
     meshes.push(m);
@@ -62,17 +64,44 @@
   lineGeo.setDrawRange(0, 0);
 
   const lineMat = new THREE.LineBasicMaterial({
-    color: 0x4338CA,   // deep indigo lines
+    color: 0x6366F1,   // deep indigo lines
     transparent: true,
-    opacity: 0.12,
+    opacity: 0.1,
   });
   scene.add(new THREE.LineSegments(lineGeo, lineMat));
 
-  /* ── Mouse ───────────────────────────────────────────── */
+  /* ── Mouse & Physics ─────────────────────────────────── */
   let tx = 0, ty = 0;
+  let mouseWorld = { x: 0, y: 0, active: false };
+  let scrollVelocity = 0;
+  let lastScrollY = window.scrollY;
+  
   document.addEventListener('mousemove', e => {
-    tx =  (e.clientX / window.innerWidth  - 0.5) * 55;
-    ty = -(e.clientY / window.innerHeight - 0.5) * 40;
+    tx =  (e.clientX / window.innerWidth  - 0.5) * 60;
+    ty = -(e.clientY / window.innerHeight - 0.5) * 45;
+    
+    // Calculate world position
+    const vM = new THREE.Vector3(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      -(e.clientY / window.innerHeight) * 2 + 1,
+      0.5
+    );
+    vM.unproject(camera);
+    vM.sub(camera.position).normalize();
+    const distance = -camera.position.z / vM.z;
+    const pos = camera.position.clone().add(vM.multiplyScalar(distance));
+    
+    mouseWorld.x = pos.x;
+    mouseWorld.y = pos.y;
+    mouseWorld.active = true;
+  });
+
+  document.addEventListener('mouseleave', () => mouseWorld.active = false);
+
+  window.addEventListener('scroll', () => {
+    const cur = window.scrollY;
+    scrollVelocity = Math.abs(cur - lastScrollY) * 0.15;
+    lastScrollY = cur;
   });
 
   /* ── Animation ───────────────────────────────────────── */
@@ -82,14 +111,53 @@
     requestAnimationFrame(animate);
     frame++;
 
+    const sV = scrollVelocity;
+    scrollVelocity *= 0.94; // Decay
+
     for (let i = 0; i < COUNT; i++) {
       const m = meshes[i], v = vels[i];
+      
+      const t = frame * 0.008;
+      
+      // 1. Calculate target drifting position (orbiting closely around origin)
+      const targetX = v.ox + Math.sin(t + v.seed) * 30;
+      const targetY = v.oy + Math.cos(t + v.seed * 2) * 30;
+      const targetZ = v.oz + Math.sin(t * 0.5 + v.seed) * 30;
+      
+      // 2. Spring force pulling node softly to its target
+      const springK = 0.015;
+      v.x += (targetX - m.position.x) * springK;
+      v.y += (targetY - m.position.y) * springK;
+      v.z += (targetZ - m.position.z) * springK;
+      
+      // Affect by scroll
+      if (sV > 0.1) {
+        v.y += (Math.random() - 0.5) * sV * 1.5;
+        v.z += (Math.random() - 0.5) * sV * 1.5;
+      }
+      
+      // 3. Swarm Physics - Repel from mouse violently
+      if (mouseWorld.active) {
+        const dx = m.position.x - mouseWorld.x;
+        const dy = m.position.y - mouseWorld.y;
+        const distSq = dx*dx + dy*dy;
+        const radiusSq = 220 * 220; // Repel radius
+        if (distSq < radiusSq && distSq > 0) {
+          const dist = Math.sqrt(distSq);
+          const force = (220 - dist) / 220; // 0 to 1 scaling
+          v.x += (dx / dist) * force * 5.0;
+          v.y += (dy / dist) * force * 5.0;
+        }
+      }
+      
+      // 4. Apply velocity + damping (friction)
+      v.x *= 0.85; 
+      v.y *= 0.85; 
+      v.z *= 0.85; 
+
       m.position.x += v.x;
       m.position.y += v.y;
       m.position.z += v.z;
-      if (Math.abs(m.position.x) > SPREAD.x * 0.5) v.x *= -1;
-      if (Math.abs(m.position.y) > SPREAD.y * 0.5) v.y *= -1;
-      if (Math.abs(m.position.z) > SPREAD.z * 0.5) v.z *= -1;
     }
 
     if (frame % 2 === 0) {
@@ -112,8 +180,8 @@
       posAttr.needsUpdate = true;
     }
 
-    camera.position.x += (tx - camera.position.x) * 0.022;
-    camera.position.y += (ty - camera.position.y) * 0.022;
+    camera.position.x += (tx - camera.position.x) * 0.025;
+    camera.position.y += (ty - camera.position.y) * 0.025;
     camera.lookAt(scene.position);
     renderer.render(scene, camera);
   })();

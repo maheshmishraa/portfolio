@@ -12,60 +12,7 @@
 
   if (typeof anime === 'undefined') return;
 
-  /* ══════════════════════════════════════════════
-     1. PAGE TRANSITION — smooth morph crossfade
-  ══════════════════════════════════════════════ */
-  let morphing = false;
-
-  window.doPageWipe = function (current, next) {
-    if (morphing) {
-      if (current) current.classList.remove('active', 'page-out', 'morph-active');
-      next.classList.add('active');
-      next.scrollTop = 0;
-      return;
-    }
-
-    morphing = true;
-
-    // Suppress CSS transitions on both pages so anime.js has full control
-    if (current) current.classList.add('morph-active');
-    next.classList.add('morph-active');
-
-    // Bring next page into the stack but invisible
-    next.classList.add('active');
-    next.scrollTop = 0;
-    anime.set(next, { opacity: 0, scale: 1.03 });
-
-    // Outgoing — fade out + shrink very slightly
-    if (current) {
-      anime({
-        targets:  current,
-        opacity:  [1, 0],
-        scale:    [1, 0.97],
-        duration: 260,
-        easing:   'easeInCubic',
-        complete() {
-          current.classList.remove('active', 'page-out', 'morph-active');
-          anime.set(current, { opacity: '', scale: '' });
-        },
-      });
-    }
-
-    // Incoming — fade in + settle to natural scale, slightly delayed for overlap feel
-    anime({
-      targets:  next,
-      opacity:  [0, 1],
-      scale:    [1.03, 1],
-      duration: 480,
-      delay:    60,
-      easing:   'easeOutExpo',
-      complete() {
-        next.classList.remove('morph-active');
-        anime.set(next, { opacity: '', scale: '' });
-        morphing = false;
-      },
-    });
-  };
+  /* page morph removed — site now uses infinite scroll */
 
   /* ══════════════════════════════════════════════
      2. CAREER TIMELINE DRAW-IN
@@ -190,26 +137,23 @@
   window.addEventListener('load', () => movePill('hero', false));
 
   /* ══════════════════════════════════════════════
-     PAGE SWITCH EVENT — wire everything together
+     SCROLL EVENT — move nav pill on section change
   ══════════════════════════════════════════════ */
   document.addEventListener('pageswitch', e => {
-    const { to } = e.detail;
-
-    // Move nav pill
-    movePill(to, true);
-
-    // Section-specific effects
-    if (to === 'about') {
-      // Small delay so the page is visible before animating
-      setTimeout(animateTimeline, 420);
-      setTimeout(animateTags,    420);
-    }
-
-    // Reset tag/timeline flags when leaving About (so they re-animate on return)
-    if (e.detail.from === 'about') {
-      tagsAnimated     = false;
-      timelineAnimated = false;
-    }
+    movePill(e.detail.to, true);
   });
+
+  // Trigger timeline + tags when about section scrolls into view
+  const aboutSection = document.getElementById('about');
+  if (aboutSection) {
+    const aboutObs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setTimeout(animateTimeline, 300);
+        setTimeout(animateTags,    300);
+        aboutObs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    aboutObs.observe(aboutSection);
+  }
 
 })();
