@@ -33,6 +33,12 @@
   <!-- Boot Sequence (must load before page renders) -->
   <script src="js/boot-sequence.js"></script>
 
+  <!-- Theme Toggle (Fixed Bottom-Right) -->
+  <button id="theme-toggle" class="theme-toggle-fixed" aria-label="Toggle Theme">
+    <span class="icon-moon">🌑</span>
+    <span class="icon-sun">☀️</span>
+  </button>
+
   <!-- Custom cursor -->
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
@@ -61,18 +67,12 @@
     <a href="#hero" class="nav-logo" data-page="hero">MM<span class="accent">.</span></a>
 
     <ul class="nav-links" id="nav-links-ul">
-      <li><a href="#about" class="nav-item" data-page="about">About</a></li>
       <li><a href="#skills" class="nav-item" data-page="skills">Expertise</a></li>
       <li><a href="#projects" class="nav-item" data-page="projects">Work</a></li>
       <li><a href="#certificates" class="nav-item" data-page="certificates">Proof</a></li>
       <li><a href="#contact" class="nav-item" data-page="contact">Contact</a></li>
       <div id="nav-pill" aria-hidden="true"></div>
     </ul>
-
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
-      <span class="icon-moon">🌑</span>
-      <span class="icon-sun">☀️</span>
-    </button>
 
     <a href="assets/resume.pdf" target="_blank" class="btn-outline-sm">
      Open Resume <span>↓</span>
@@ -85,7 +85,6 @@
 
   <!-- Mobile drawer -->
   <div class="mobile-drawer" id="mobile-drawer">
-    <a href="#about" class="mob-link" data-page="about">About</a>
     <a href="#skills" class="mob-link" data-page="skills">Expertise</a>
     <a href="#projects" class="mob-link" data-page="projects">Work</a>
     <a href="#certificates" class="mob-link" data-page="certificates">Proof</a>

@@ -117,22 +117,60 @@
 
 .mob-link:hover { color: var(--text); }
 
-/* Theme Toggle */
-.theme-toggle {
-  background: none;
-  border: none;
+/* Theme Toggle (Fixed Bottom-Right) */
+.theme-toggle-fixed {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: var(--card);
+  border: 1px solid var(--border-b);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
   font-size: 1.25rem;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: background 0.2s;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
 }
-.theme-toggle:hover { background: var(--border); }
+
+.theme-toggle-fixed:hover {
+  background: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+  transform: scale(1.1);
+}
+
+.theme-toggle-fixed:active {
+  transform: scale(0.95);
+}
+
+[data-theme="dark"] .theme-toggle-fixed {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .theme-toggle-fixed:hover {
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
 [data-theme="dark"] .icon-moon { display: none; }
 html:not([data-theme="dark"]) .icon-sun { display: none; }
 
 [data-theme="dark"] .navbar { background: rgba(15, 23, 42, 0.85); }
 [data-theme="dark"] .mobile-drawer { background: rgba(15, 23, 42, 0.98); }
+
+/* Responsive for theme toggle */
+@media (max-width: 768px) {
+  .theme-toggle-fixed {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+}
