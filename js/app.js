@@ -332,7 +332,8 @@
       const ww = window.innerWidth;
       if (ww < 640)  return 1;
       if (ww < 960)  return 2;
-      return 3;
+      if (ww < 1400) return 3;
+      return 4;
     }
 
     function cardWidth() {
